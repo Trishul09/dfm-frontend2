@@ -11,6 +11,8 @@ import Vaults from "./pages/Vaults";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Governance from "./pages/Governance";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +33,8 @@ const App = () => (
           <Route path="/vaults" element={<Vaults />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/creator/:id" element={<Profile />} />
+          <Route path="/governance" element={<Governance />} />
+          <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
