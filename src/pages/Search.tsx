@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search as SearchIcon, Filter, Play, User, Verified } from "lucide-react";
+import { Search as SearchIcon, Filter, Play, User, Verified, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -47,19 +47,30 @@ const Search = () => {
   };
 
   return (
-    <div className="min-h-screen watercolor-bg relative overflow-hidden">
+    <div className="min-h-screen emerald-bg relative overflow-hidden">
       {/* Ambient background effects */}
       <div className="fixed inset-0 opacity-15">
         <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-radial from-yellow-400/25 to-transparent rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-40 left-20 w-80 h-80 bg-gradient-radial from-purple-400/20 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-40 left-20 w-80 h-80 bg-gradient-radial from-emerald-400/20 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       <div className="relative z-10 min-h-screen p-6">
-        {/* Header */}
+        {/* Header with Back Button */}
         <div className="max-w-4xl mx-auto mb-8">
+          <div className="flex items-center justify-between mb-8">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/dashboard")}
+              className="flex items-center space-x-2 text-emerald-700 hover:text-golden-glow hover:bg-golden-glow/10 rounded-xl p-3 glow-golden"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span>Back to Dashboard</span>
+            </Button>
+          </div>
+          
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">Discover Music</h1>
-            <p className="text-xl text-gray-600">Explore through natural input and filters</p>
+            <h1 className="text-4xl font-bold text-emerald-800 mb-4">Discover Music</h1>
+            <p className="text-xl text-emerald-600">Explore through natural input and filters</p>
           </div>
 
           {/* Search Section */}
@@ -77,14 +88,14 @@ const Search = () => {
                   onBlur={() => setFocusedInput(false)}
                   className={`pl-12 pr-4 py-3 text-lg border-2 rounded-xl transition-all duration-300 ${
                     focusedInput 
-                      ? "border-yellow-500 glow-golden" 
-                      : "border-gray-200 hover:border-yellow-300"
+                      ? "border-golden-glow glow-golden" 
+                      : "border-emerald-300 hover:border-golden-glow"
                   }`}
                 />
               </div>
 
               <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger className="w-full sm:w-48 py-3 border-2 border-gray-200 hover:border-yellow-300 rounded-xl transition-all duration-300">
+                <SelectTrigger className="w-full sm:w-48 py-3 border-2 border-emerald-300 hover:border-golden-glow rounded-xl transition-all duration-300">
                   <div className="flex items-center space-x-2">
                     <Filter className="w-4 h-4" />
                     <SelectValue />

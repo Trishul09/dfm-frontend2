@@ -33,11 +33,11 @@ const MusicDetail = () => {
   };
 
   return (
-    <div className="min-h-screen watercolor-bg relative overflow-hidden">
+    <div className="min-h-screen emerald-bg relative overflow-hidden">
       {/* Ambient background effects */}
       <div className="fixed inset-0 opacity-20">
         <div className="absolute top-40 left-40 w-96 h-96 bg-gradient-radial from-yellow-400/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-radial from-blue-400/20 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-radial from-emerald-400/25 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       <div className="relative z-10 min-h-screen p-6">
@@ -46,7 +46,7 @@ const MusicDetail = () => {
           <Button
             variant="ghost"
             onClick={() => navigate("/dashboard")}
-            className="flex items-center space-x-2 text-gray-600 hover:text-yellow-500 hover:bg-yellow-500/10 rounded-xl p-3 liquid-glow"
+            className="flex items-center space-x-2 text-emerald-700 hover:text-golden-glow hover:bg-golden-glow/10 rounded-xl p-3 glow-golden"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Dashboard</span>

@@ -82,13 +82,13 @@ export default function Governance() {
   };
 
   return (
-    <div className="min-h-screen serene-bg">
+    <div className="min-h-screen emerald-bg">
       <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Link 
             to="/dashboard" 
-            className="back-button flex items-center space-x-2 px-4 py-2 rounded-full"
+            className="flex items-center space-x-2 text-emerald-700 hover:text-golden-glow hover:bg-golden-glow/10 rounded-xl p-3 glow-golden transition-all duration-300"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Dashboard</span>
