@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useMusicPlayer } from "@/contexts/MusicContext";
 import heroAlbum from "@/assets/hero-album.jpg";
 import album1 from "@/assets/album-1.jpg";
 import album2 from "@/assets/album-2.jpg";
@@ -31,8 +32,7 @@ interface Song {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(42);
+  const { currentSong, isPlaying, progress, setCurrentSong, togglePlayPause, playNext, playPrevious } = useMusicPlayer();
   
   const discoverSongs: Song[] = [
     { id: "1", title: "Liquid Dreams", artist: "Aurora Synth", album: "Golden Waves", cover: album1, price: "0.05 SUI" },
@@ -49,8 +49,14 @@ const Dashboard = () => {
     { icon: Settings, label: "Preferences", path: "/settings" },
   ];
 
-  const handleSongClick = (songId: string) => {
-    navigate(`/music/${songId}`);
+  const handleSongClick = (song: Song) => {
+    setCurrentSong(song);
+  };
+
+  const handleCurrentSongClick = () => {
+    if (currentSong) {
+      navigate(`/music/${currentSong.id}`);
+    }
   };
 
   return (
@@ -104,11 +110,14 @@ const Dashboard = () => {
           </div>
 
           {/* Now Playing Card */}
-          <Card className="glass-panel rounded-3xl p-8 glow-golden float">
+          <Card 
+            className="glass-panel rounded-3xl p-8 glow-golden float cursor-pointer" 
+            onClick={handleCurrentSongClick}
+          >
             <div className="flex items-center space-x-8">
               <div className="relative">
                 <img 
-                  src={heroAlbum} 
+                  src={currentSong?.cover || heroAlbum} 
                   alt="Current Song" 
                   className="w-32 h-32 rounded-2xl object-cover shadow-lg"
                 />
@@ -117,21 +126,32 @@ const Dashboard = () => {
               
               <div className="flex-1 space-y-4">
                 <div className="text-center">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-1">Cosmic Journey</h2>
-                  <p className="text-gray-600">Stellar Harmonics</p>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-1">
+                    {currentSong?.title || "Cosmic Journey"}
+                  </h2>
+                  <p className="text-gray-600">
+                    {currentSong?.artist || "Stellar Harmonics"}
+                  </p>
                 </div>
                 
                 <div className="flex items-center justify-center space-x-6">
                   <Button
                     variant="ghost"
                     size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      playPrevious();
+                    }}
                     className="w-12 h-12 rounded-full hover:bg-yellow-500/10 hover:text-yellow-500 liquid-glow"
                   >
                     <SkipBack className="w-6 h-6" />
                   </Button>
                   
                   <Button
-                    onClick={() => setIsPlaying(!isPlaying)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      togglePlayPause();
+                    }}
                     className="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-white shadow-lg glow-golden"
                   >
                     {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8 ml-1" />}
@@ -140,6 +160,10 @@ const Dashboard = () => {
                   <Button
                     variant="ghost"
                     size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      playNext();
+                    }}
                     className="w-12 h-12 rounded-full hover:bg-yellow-500/10 hover:text-yellow-500 liquid-glow"
                   >
                     <SkipForward className="w-6 h-6" />
@@ -176,7 +200,7 @@ const Dashboard = () => {
                   key={song.id}
                   className="min-w-[280px] glass-panel rounded-2xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer group float"
                   style={{ animationDelay: `${index * 0.2}s` }}
-                  onClick={() => handleSongClick(song.id)}
+                  onClick={() => navigate(`/music/${song.id}`)}
                 >
                   <div className="space-y-4">
                     <div className="relative">
@@ -189,10 +213,14 @@ const Dashboard = () => {
                       <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <Button
                           size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSongClick(song);
+                          }}
                           className="w-full bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30"
                         >
                           <Play className="w-4 h-4 mr-2" />
-                          Preview
+                          Play Now
                         </Button>
                       </div>
                     </div>

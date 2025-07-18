@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { useMusicPlayer } from "@/contexts/MusicContext";
 import album1 from "@/assets/album-1.jpg";
 import album2 from "@/assets/album-2.jpg";
 import album3 from "@/assets/album-3.jpg";
@@ -26,6 +27,7 @@ interface SearchResult {
 
 const Search = () => {
   const navigate = useNavigate();
+  const { setCurrentSong } = useMusicPlayer();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [focusedInput, setFocusedInput] = useState(false);
@@ -38,7 +40,20 @@ const Search = () => {
     { type: "creator", id: "neon", name: "Neon Pulse", avatar: userAvatar, verified: false, followers: "8.2K" },
   ];
 
-  const handleSongClick = (songId: string) => {
+  const handleSongClick = (result: SearchResult) => {
+    if (result.type === "song") {
+      const song = {
+        id: result.id,
+        title: result.title!,
+        artist: result.artist!,
+        cover: result.cover!,
+        price: result.price
+      };
+      setCurrentSong(song);
+    }
+  };
+
+  const handleSongDetailClick = (songId: string) => {
     navigate(`/music/${songId}`);
   };
 
@@ -116,11 +131,11 @@ const Search = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {searchResults.map((result, index) => (
-              <Card 
+                <Card 
                 key={`${result.type}-${result.id}`}
                 className="glass-panel rounded-2xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer group float"
                 style={{ animationDelay: `${index * 0.1}s` }}
-                onClick={() => result.type === "song" ? handleSongClick(result.id) : handleCreatorClick(result.id)}
+                onClick={() => result.type === "song" ? handleSongDetailClick(result.id) : handleCreatorClick(result.id)}
               >
                 {result.type === "song" ? (
                   <div className="space-y-4">
@@ -134,6 +149,10 @@ const Search = () => {
                       <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <Button
                           size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSongClick(result);
+                          }}
                           className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30 p-0"
                         >
                           <Play className="w-4 h-4" />
